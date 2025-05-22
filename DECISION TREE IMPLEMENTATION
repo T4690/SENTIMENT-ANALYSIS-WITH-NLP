@@ -1,0 +1,57 @@
+#import pandasand scikit package
+import pandas as pd
+import sklearn.datasets as datas
+from sklearn import tree
+from sklearn.model_selection import train_test_split
+
+#Load the diabetes dataset
+diabetesdata = datas.load_diabetes()
+diabetesdata
+
+#check datatype
+type(diabetesdata)
+
+sklearn.utils._bunch.Bunch
+def __init__(**kwargs)
+
+#examine the keys present in the dataset
+diabetesdata.keys()
+
+diabetesdata.target
+
+#collect all the indepent variables and store it as an object diabetesIndData
+diabetesIndData = diabetesdata.data
+
+#covert the object into a pandas dataframe
+diabetesIndData = pd.DataFrame(diabetesdata.data)
+diabetesIndData.head(5)
+
+#Display the features names in the dataset
+diabetesdata.feature_names
+
+#create an list with all the column names
+diabetesIndData.columns = ['age', 'sex', 'bmi', 'bp', 's1', 's2', 's3', 's4', 's5', 's6']
+diabetesIndData.head()
+
+#split the dataset-80% to training dataset and 20% to test dataset
+diabetesIndTrain, diabetesIndTest, diabetesDepTrain, diabetesDepTest = train_test_split(diabetesIndData, diabetesdata.target, test_size=0.2, random_state=1)
+
+#Instantiate the decision tree model
+dt = tree.DecisionTreeClassifier(max_depth=4,criterion='entropy')
+
+#Build model
+model = dt.fit(diabetesIndTrain, diabetesDepTrain)
+
+#obtain the predictions for the model
+predictedData = model.predict(diabetesIndTest)
+predictedData
+
+#import graphviz package
+import graphviz
+
+#visualize the decision tree
+dot_data=tree.export_graphviz(model, out_file=None, feature_names=diabetesIndData.columns, filled=True, rounded=True)
+
+#Display the Decision Tree
+graph=graphviz.Source(dot_data)
+graph
